@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Invoice;
 use App\Models\Subscription;
+use App\Mail\PaymentReminderMail;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
 
@@ -91,14 +92,12 @@ class ProcessBilling extends Command
         $user = $subscription->company->users()->first();
 
         if ($user) {
-            // In a real application, you would send an actual email here
-            // For now, we'll just log it
-            $this->info("Payment reminder sent to: {$user->email}");
-            
-            // Example email sending (uncomment when mail is configured)
-            /*
-            Mail::to($user->email)->send(new PaymentReminderMail($invoice));
-            */
+            try {
+                Mail::to($user->email)->send(new PaymentReminderMail($invoice));
+                $this->info("Payment reminder sent to: {$user->email}");
+            } catch (\Exception $e) {
+                $this->error("Failed to send payment reminder to {$user->email}: " . $e->getMessage());
+            }
         }
     }
 }

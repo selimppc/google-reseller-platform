@@ -49,7 +49,7 @@
                     @if(auth()->user()->isAdmin())
                         <div class="mb-6 p-4 bg-blue-50 rounded-lg">
                             <h3 class="text-lg font-medium text-blue-900 mb-2">Admin Reply</h3>
-                            <form method="POST" action="{{ route('support.reply', $ticket) }}">
+                            <form method="POST" action="{{ route('support.admin.reply', $ticket) }}">
                                 @csrf
                                 <textarea name="reply" rows="4" required
                                     class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
@@ -75,9 +75,8 @@
                         </a>
                         @if(auth()->user()->isAdmin())
                             <div class="space-x-2">
-                                <form method="POST" action="{{ route('support.update-status', $ticket) }}" class="inline">
+                                <form method="POST" action="{{ route('support.admin.status', $ticket) }}" class="inline">
                                     @csrf
-                                    @method('PUT')
                                     <input type="hidden" name="status" value="closed">
                                     <button type="submit" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
                                         Close Ticket

@@ -84,7 +84,7 @@
                             <h3 class="text-lg font-medium text-gray-900 mb-4">Actions</h3>
                             <div class="flex space-x-4">
                                 @if($subscription->status === 'active')
-                                    <form method="POST" action="{{ route('customer.cancel-subscription') }}" class="inline">
+                                    <form method="POST" action="{{ route('customer.subscription.cancel') }}" class="inline">
                                         @csrf
                                         <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" 
                                                 onclick="return confirm('Are you sure you want to cancel your subscription?')">

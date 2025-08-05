@@ -166,7 +166,7 @@
                                     @endforeach
                                 </ul>
                                 <div class="mt-8 mb-4">
-                                    <a href="{{ route('checkout.show', $plan) }}" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded">
+                                    <a href="{{ route('checkout.show', $plan->slug) }}" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded">
                                         Choose {{ $plan->name }}
                                     </a>
                                 </div>

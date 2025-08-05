@@ -97,7 +97,6 @@
                 <h3 class="text-lg font-medium text-gray-900 mb-4">Update Instance Status</h3>
                 <form id="updateForm" method="POST">
                     @csrf
-                    @method('PUT')
                     <div class="mb-4">
                         <label for="google_customer_id" class="block text-sm font-medium text-gray-700 mb-2">Google Customer ID</label>
                         <input type="text" name="google_customer_id" id="google_customer_id" required

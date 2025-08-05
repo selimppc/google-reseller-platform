@@ -105,6 +105,14 @@ class AdminController extends Controller
     }
 
     /**
+     * Get plan data for editing.
+     */
+    public function editPlan(Plan $plan)
+    {
+        return response()->json($plan);
+    }
+
+    /**
      * Store new plan.
      */
     public function storePlan(Request $request)

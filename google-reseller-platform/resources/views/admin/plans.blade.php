@@ -150,19 +150,71 @@
             document.getElementById('modalTitle').textContent = 'Create New Plan';
             document.getElementById('planForm').action = '{{ route("admin.plans.store") }}';
             document.getElementById('planForm').method = 'POST';
+            
+            // Clear form fields
+            document.getElementById('name').value = '';
+            document.getElementById('slug').value = '';
+            document.getElementById('price_monthly').value = '';
+            document.getElementById('price_annually').value = '';
+            document.getElementById('google_workspace_sku').value = '';
+            document.getElementById('features').value = '';
+            
+            // Remove PUT method override if it exists
+            const methodInput = document.getElementById('_method');
+            if (methodInput) {
+                methodInput.remove();
+            }
+            
             document.getElementById('planModal').classList.remove('hidden');
         }
 
         function editPlan(planId) {
-            document.getElementById('modalTitle').textContent = 'Edit Plan';
-            document.getElementById('planForm').action = `/admin/plans/${planId}`;
-            document.getElementById('planForm').method = 'POST';
-            document.getElementById('planForm').innerHTML += '<input type="hidden" name="_method" value="PUT">';
-            document.getElementById('planModal').classList.remove('hidden');
+            // Fetch plan data and populate form
+            fetch(`/admin/plans/${planId}/edit`)
+                .then(response => response.json())
+                .then(plan => {
+                    document.getElementById('modalTitle').textContent = 'Edit Plan';
+                    document.getElementById('planForm').action = `/admin/plans/${planId}`;
+                    document.getElementById('planForm').method = 'POST';
+                    
+                    // Add PUT method override
+                    let methodInput = document.getElementById('_method');
+                    if (!methodInput) {
+                        methodInput = document.createElement('input');
+                        methodInput.type = 'hidden';
+                        methodInput.name = '_method';
+                        methodInput.id = '_method';
+                        document.getElementById('planForm').appendChild(methodInput);
+                    }
+                    methodInput.value = 'PUT';
+                    
+                    // Populate form fields
+                    document.getElementById('name').value = plan.name;
+                    document.getElementById('slug').value = plan.slug;
+                    document.getElementById('price_monthly').value = plan.price_monthly;
+                    document.getElementById('price_annually').value = plan.price_annually;
+                    document.getElementById('google_workspace_sku').value = plan.google_workspace_sku;
+                    document.getElementById('features').value = plan.features.join('\n');
+                    
+                    document.getElementById('planModal').classList.remove('hidden');
+                })
+                .catch(error => {
+                    console.error('Error fetching plan data:', error);
+                    alert('Error loading plan data');
+                });
         }
 
         function closeModal() {
             document.getElementById('planModal').classList.add('hidden');
+            
+            // Reset form
+            document.getElementById('planForm').reset();
+            
+            // Remove PUT method override if it exists
+            const methodInput = document.getElementById('_method');
+            if (methodInput) {
+                methodInput.remove();
+            }
         }
     </script>
 </x-app-layout> 

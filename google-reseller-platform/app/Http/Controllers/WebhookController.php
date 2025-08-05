@@ -4,11 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\GoogleWorkspaceInstance;
 use App\Models\Invoice;
+use App\Services\SSLCOMMERZService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class WebhookController extends Controller
 {
+    protected $sslcommerzService;
+
+    public function __construct(SSLCOMMERZService $sslcommerzService)
+    {
+        $this->sslcommerzService = $sslcommerzService;
+    }
+
     /**
      * Handle SSLCOMMERZ payment callback.
      */
@@ -16,8 +24,18 @@ class WebhookController extends Controller
     {
         Log::info('SSLCOMMERZ callback received', $request->all());
 
-        // Verify the payment signature (in production, you would verify SSLCOMMERZ signature)
-        $invoice = Invoice::where('invoice_number', $request->invoice_number)->first();
+        // Validate payment response
+        $validation = $this->sslcommerzService->validatePayment($request);
+        
+        if (!$validation['valid']) {
+            Log::error('Invalid SSLCOMMERZ payment', [
+                'message' => $validation['message'],
+                'data' => $request->all()
+            ]);
+            return response()->json(['error' => $validation['message']], 400);
+        }
+
+        $invoice = Invoice::where('invoice_number', $request->tran_id)->first();
 
         if (!$invoice) {
             Log::error('Invoice not found for callback', $request->all());

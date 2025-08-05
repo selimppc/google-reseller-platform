@@ -199,20 +199,86 @@ Set up a cron job to run Laravel's scheduler:
 - **SQL Injection Protection**: Eloquent ORM
 - **XSS Protection**: Blade template escaping
 
-## Deployment
+## 🚀 Production Deployment
 
-### Production Checklist
-1. Set `APP_ENV=production` in `.env`
-2. Configure production database
-3. Set up SSL certificate
-4. Configure web server (Apache/Nginx)
-5. Set up cron jobs for scheduled tasks
-6. Configure backup system
-7. Set up monitoring and logging
+### Quick Deployment
+```bash
+# Run the automated deployment script
+./deploy.sh
+```
+
+### Manual Deployment Steps
+
+1. **Server Setup**
+   ```bash
+   # Install required packages
+   sudo apt update
+   sudo apt install php8.1 php8.1-fpm php8.1-mysql php8.1-redis nginx mysql-server redis-server
+   ```
+
+2. **Application Setup**
+   ```bash
+   # Clone and configure
+   git clone <repository>
+   cd google-reseller-platform
+   composer install --no-dev --optimize-autoloader
+   npm install && npm run build
+   ```
+
+3. **Environment Configuration**
+   ```bash
+   # Copy and configure environment
+   cp .env.example .env
+   # Edit .env with your production values
+   php artisan key:generate
+   ```
+
+4. **Database Setup**
+   ```bash
+   php artisan migrate --force
+   php artisan db:seed
+   ```
+
+5. **Performance Optimization**
+   ```bash
+   php artisan config:cache
+   php artisan route:cache
+   php artisan view:cache
+   ```
+
+6. **Permissions**
+   ```bash
+   chmod -R 755 storage bootstrap/cache
+   chown -R www-data:www-data storage bootstrap/cache
+   ```
+
+### Critical Production Configurations
+
+**Required Environment Variables:**
+- `APP_DEBUG=false`
+- `SSLCOMMERZ_STORE_ID` and `SSLCOMMERZ_STORE_PASSWORD`
+- `GTM_CONTAINER_ID` (real GTM container)
+- `MAIL_*` settings for email notifications
+- `REDIS_*` settings for caching
+
+**Security Checklist:**
+- ✅ SSL certificate installed
+- ✅ Database backups configured
+- ✅ Error monitoring set up
+- ✅ Payment gateway tested
+- ✅ Email notifications working
+- ✅ Health checks passing
+
+**Performance Optimizations:**
+- ✅ Redis caching enabled
+- ✅ Database indexes added
+- ✅ Queue workers running
+- ✅ Static assets optimized
 
 ### Server Requirements
 - PHP 8.2+
 - MySQL 8.0+ or PostgreSQL 15+
+- Redis 6.0+
 - Web server (Apache/Nginx)
 - SSL certificate
 - Cron job support

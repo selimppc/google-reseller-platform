@@ -108,6 +108,19 @@ class CheckoutController extends Controller
     }
 
     /**
+     * Show payment processing page.
+     */
+    public function paymentProcess(Invoice $invoice)
+    {
+        // Check if user has access to this invoice
+        if ($invoice->company_id !== auth()->user()->company_id && !auth()->user()->isAdmin()) {
+            abort(403);
+        }
+
+        return view('payment.process', compact('invoice'));
+    }
+
+    /**
      * Process payment callback from gateway.
      */
     public function paymentCallback(Request $request)

@@ -24,12 +24,20 @@ Route::get('/checkout/{plan}', [CheckoutController::class, 'show'])->name('check
 Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
 
 // Payment routes
-Route::get('/payment/{invoice}', function ($invoice) {
-    // Simulate payment gateway
-    return view('payment.process', compact('invoice'));
-})->name('payment.process');
+Route::get('/payment/{invoice}', [CheckoutController::class, 'paymentProcess'])->name('payment.process');
 
 Route::post('/checkout/callback', [CheckoutController::class, 'paymentCallback'])->name('checkout.callback');
+
+// Health check route
+Route::get('/health', function () {
+    return response()->json([
+        'status' => 'healthy',
+        'timestamp' => now(),
+        'database' => DB::connection()->getPdo() ? 'connected' : 'disconnected',
+        'version' => '1.0.0',
+        'environment' => config('app.env'),
+    ]);
+});
 
 // Webhook routes
 Route::post('/webhooks/sslcommerz', [WebhookController::class, 'sslcommerzCallback'])->name('webhooks.sslcommerz');
@@ -44,7 +52,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['auth', 'role:customer'])->prefix('customer')->name('customer.')->group(function () {
         Route::get('/dashboard', [CustomerController::class, 'dashboard'])->name('dashboard');
         Route::get('/billing', [CustomerController::class, 'billingHistory'])->name('billing');
-        Route::get('/billing/{invoice}/download', [CustomerController::class, 'downloadInvoice'])->name('billing.download');
+        Route::get('/billing/{invoice}/download', [CustomerController::class, 'downloadInvoice'])->name('download-invoice');
         Route::get('/subscription', [CustomerController::class, 'subscription'])->name('subscription');
         Route::post('/subscription/cancel', [CustomerController::class, 'cancelSubscription'])->name('subscription.cancel');
     });
@@ -58,20 +66,21 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/provisioning/{instance}', [AdminController::class, 'updateInstance'])->name('provisioning.update');
         Route::get('/plans', [AdminController::class, 'plans'])->name('plans');
         Route::post('/plans', [AdminController::class, 'storePlan'])->name('plans.store');
+        Route::get('/plans/{plan}/edit', [AdminController::class, 'editPlan'])->name('plans.edit');
         Route::put('/plans/{plan}', [AdminController::class, 'updatePlan'])->name('plans.update');
         Route::post('/plans/{plan}/toggle', [AdminController::class, 'togglePlan'])->name('plans.toggle');
         
         // Blog management
-        Route::get('/blog', [Admin\BlogController::class, 'index'])->name('blog.index');
-        Route::get('/blog/create', [Admin\BlogController::class, 'create'])->name('blog.create');
-        Route::post('/blog', [Admin\BlogController::class, 'store'])->name('blog.store');
-        Route::get('/blog/{post}/edit', [Admin\BlogController::class, 'edit'])->name('blog.edit');
-        Route::put('/blog/{post}', [Admin\BlogController::class, 'update'])->name('blog.update');
-        Route::delete('/blog/{post}', [Admin\BlogController::class, 'destroy'])->name('blog.destroy');
-        Route::get('/blog/categories', [Admin\BlogController::class, 'categories'])->name('blog.categories');
-        Route::post('/blog/categories', [Admin\BlogController::class, 'storeCategory'])->name('blog.categories.store');
-        Route::put('/blog/categories/{category}', [Admin\BlogController::class, 'updateCategory'])->name('blog.categories.update');
-        Route::delete('/blog/categories/{category}', [Admin\BlogController::class, 'destroyCategory'])->name('blog.categories.destroy');
+        Route::get('/blog', [\App\Http\Controllers\Admin\BlogController::class, 'index'])->name('blog.index');
+        Route::get('/blog/create', [\App\Http\Controllers\Admin\BlogController::class, 'create'])->name('blog.create');
+        Route::post('/blog', [\App\Http\Controllers\Admin\BlogController::class, 'store'])->name('blog.store');
+        Route::get('/blog/{post}/edit', [\App\Http\Controllers\Admin\BlogController::class, 'edit'])->name('blog.edit');
+        Route::put('/blog/{post}', [\App\Http\Controllers\Admin\BlogController::class, 'update'])->name('blog.update');
+        Route::delete('/blog/{post}', [\App\Http\Controllers\Admin\BlogController::class, 'destroy'])->name('blog.destroy');
+        Route::get('/blog/categories', [\App\Http\Controllers\Admin\BlogController::class, 'categories'])->name('blog.categories');
+        Route::post('/blog/categories', [\App\Http\Controllers\Admin\BlogController::class, 'storeCategory'])->name('blog.categories.store');
+        Route::put('/blog/categories/{category}', [\App\Http\Controllers\Admin\BlogController::class, 'updateCategory'])->name('blog.categories.update');
+        Route::delete('/blog/categories/{category}', [\App\Http\Controllers\Admin\BlogController::class, 'destroyCategory'])->name('blog.categories.destroy');
     });
 
     // Support routes
