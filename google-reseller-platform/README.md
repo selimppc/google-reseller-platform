@@ -1,6 +1,6 @@
-# Google Workspace Reseller Platform
+# Digital Ascent BD - Google Workspace Reseller Platform
 
-A complete Laravel application for managing Google Workspace reselling business in Bangladesh. This platform provides a comprehensive solution for selling, managing, and billing Google Workspace subscriptions with local payment gateway integration.
+A complete Laravel application for Digital Ascent BD's Google Workspace reselling business in Bangladesh. This platform provides a comprehensive solution for selling, managing, and billing Google Workspace subscriptions with local payment gateway integration and SME-focused features.
 
 ## Features
 
@@ -103,7 +103,7 @@ A complete Laravel application for managing Google Workspace reselling business 
    Point your web server to the `public` directory.
 
 ### Default Admin Account
-- **Email**: admin@google-reseller.com
+- **Email**: admin@digitalascentbd.com
 - **Password**: password
 
 ## Configuration

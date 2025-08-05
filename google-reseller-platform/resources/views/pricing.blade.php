@@ -6,14 +6,14 @@
                     Choose the perfect plan for your business
                 </h2>
                 <p class="mt-4 text-lg text-gray-600">
-                    Professional Google Workspace solutions with local support and competitive pricing
+                    Digital Ascent BD provides professional Google Workspace solutions with local support and competitive pricing in BDT
                 </p>
             </div>
 
-            <div class="mt-12 space-y-4 sm:mt-16 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-6 lg:max-w-4xl lg:mx-auto xl:max-w-none xl:mx-0 xl:grid-cols-3">
+            <div class="mt-12 space-y-8 sm:mt-16 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-8 lg:max-w-4xl lg:mx-auto xl:max-w-none xl:mx-0 xl:grid-cols-3">
                 @foreach($plans as $plan)
-                <div class="border border-gray-200 rounded-lg shadow-sm divide-y divide-gray-200 bg-white">
-                    <div class="p-6">
+                <div class="border border-gray-200 rounded-lg shadow-sm divide-y divide-gray-200 bg-white my-6">
+                    <div class="p-8">
                         <h2 class="text-lg leading-6 font-medium text-gray-900">{{ $plan->name }}</h2>
                         <p class="mt-4 text-sm text-gray-500">
                             Perfect for {{ strtolower(str_replace('Business ', '', $plan->name)) }} teams
@@ -25,11 +25,11 @@
                         <p class="mt-1 text-sm text-gray-500">
                             ৳{{ number_format($plan->price_annually) }} billed annually
                         </p>
-                        <a href="{{ route('checkout.show', $plan->slug) }}" class="mt-8 block w-full bg-indigo-600 border border-transparent rounded-md py-2 text-sm font-semibold text-white text-center hover:bg-indigo-700">
+                        <a href="{{ route('checkout.show', $plan->slug) }}" class="mt-8 mb-4 block w-full bg-indigo-600 border border-transparent rounded-md py-3 text-sm font-semibold text-white text-center hover:bg-indigo-700">
                             Choose {{ $plan->name }}
                         </a>
                     </div>
-                    <div class="pt-6 pb-8 px-6">
+                    <div class="pt-8 pb-10 px-8">
                         <h3 class="text-xs font-semibold text-gray-900 tracking-wide uppercase">What's included</h3>
                         <ul class="mt-6 space-y-4">
                             @foreach($plan->features as $feature)

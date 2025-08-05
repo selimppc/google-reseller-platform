@@ -24,7 +24,7 @@ class CustomerController extends Controller
     public function billingHistory()
     {
         $user = auth()->user();
-        $invoices = $user->company->invoices()->with('subscription.plan')->orderBy('created_at', 'desc')->get();
+        $invoices = $user->company->invoices()->with('subscription.plan')->orderBy('created_at', 'desc')->paginate(20);
         
         return view('customer.billing-history', compact('invoices'));
     }

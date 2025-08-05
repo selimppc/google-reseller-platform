@@ -1,6 +1,11 @@
 <x-app-layout>
-    @section('title', 'Payment Successful - Google Workspace Reseller')
-    @section('description', 'Your Google Workspace subscription has been activated successfully.')
+    <x-slot name="title">
+        Payment Successful - Google Workspace Reseller
+    </x-slot>
+    
+    <x-slot name="description">
+        Your Google Workspace subscription has been activated successfully.
+    </x-slot>
     
     <div class="py-12">
         <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">

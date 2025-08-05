@@ -71,7 +71,7 @@ class AdminController extends Controller
         $instances = GoogleWorkspaceInstance::with('company')
             ->where('status', 'pending_provisioning')
             ->orderBy('created_at', 'asc')
-            ->get();
+            ->paginate(20);
 
         return view('admin.provisioning-queue', compact('instances'));
     }
@@ -99,7 +99,7 @@ class AdminController extends Controller
      */
     public function plans()
     {
-        $plans = Plan::orderBy('price_monthly', 'asc')->get();
+        $plans = Plan::orderBy('price_monthly', 'asc')->paginate(20);
         
         return view('admin.plans', compact('plans'));
     }

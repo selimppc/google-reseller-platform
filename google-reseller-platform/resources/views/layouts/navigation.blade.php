@@ -6,7 +6,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('home') }}" class="text-2xl font-bold text-gray-800">
-                        Google Workspace Reseller
+                        Digital Ascent BD
                     </a>
                 </div>
 
@@ -44,6 +44,9 @@
                         <x-nav-link href="{{ route('pricing') }}" :active="request()->routeIs('pricing')">
                             Pricing
                         </x-nav-link>
+                        <x-nav-link href="{{ route('blog.index') }}" :active="request()->routeIs('blog.*')">
+                            Blog
+                        </x-nav-link>
                     @endauth
                 </div>
             </div>
@@ -54,7 +57,7 @@
                     <div class="ml-3 relative">
                         <x-dropdown align="right" width="48">
                             <x-slot name="trigger">
-                                <button class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
+                                <button type="button" class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
                                     <div>{{ Auth::user()->name }}</div>
 
                                     <div class="ml-1">

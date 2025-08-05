@@ -13,7 +13,7 @@ class SupportController extends Controller
     public function index()
     {
         $user = auth()->user();
-        $tickets = $user->supportTickets()->orderBy('created_at', 'desc')->get();
+        $tickets = $user->supportTickets()->orderBy('created_at', 'desc')->paginate(20);
         
         return view('support.index', compact('tickets'));
     }
